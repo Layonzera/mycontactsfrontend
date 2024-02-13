@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ButtonContainer } from './styles';
 
 import isEmailValid from '../../utils/isEmailValid';
+import formatPhone from '../../utils/formatPhone';
 import useErrors from '../../hooks/useErrors';
 
 import FormGroup from '../FormGroup';
@@ -38,6 +39,10 @@ export default function ContactForm({ buttonLabel }) {
     }
   }
 
+  function handlePhoneChange(event) {
+    setPhone(formatPhone(event.target.value));
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -47,7 +52,7 @@ export default function ContactForm({ buttonLabel }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} noValidate>
       <FormGroup error={getErrorMessageByFieldName('name')}>
         <Input
           error={getErrorMessageByFieldName('name')}
@@ -59,6 +64,7 @@ export default function ContactForm({ buttonLabel }) {
 
       <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
+          type="email"
           error={getErrorMessageByFieldName('email')}
           placeholder="E-mail"
           value={email}
@@ -68,9 +74,11 @@ export default function ContactForm({ buttonLabel }) {
 
       <FormGroup>
         <Input
+          type="tel"
           placeholder="Telefone"
+          maxLength={15}
           value={phone}
-          onChange={(event) => setPhone(event.target.value)}
+          onChange={handlePhoneChange}
         />
       </FormGroup>
 
